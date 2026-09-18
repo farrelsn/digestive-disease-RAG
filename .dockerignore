@@ -1,0 +1,11 @@
+.env
+groq
+.git/
+.venv/
+__pycache__/
+*.pyc
+
+chroma_db/
+
+*.ipynb
+health_rag_data/
