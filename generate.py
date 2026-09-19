@@ -19,13 +19,25 @@ GROQ_MODEL = "openai/gpt-oss-120b"
 SYSTEM_PROMPT = """You explain digestive health information to the public, using ONLY the numbered sources below.
 
 Rules:
-- Base every statement on the sources. Do not add facts from your own knowledge.
+- If the question describes serious warning signs (for example vomiting blood, black or bloody stool,
+  severe belly pain, signs of dehydration), start your answer by telling the person to seek medical
+  care right away. Do this even if the sources don't cover the question. This one sentence needs no
+  citation.
+- Base every other statement on the sources. Do not add facts from your own knowledge.
 - After each statement, cite its source number in square brackets, like [1] or [2][3].
   Use that exact format. No other citation style, and never add line numbers.
-- If the sources don't answer the question, say: "My sources don't cover this." Don't guess.
-- Some sources are written for children or infants (their title says so). Unless the question is about a child or infant, use the other sources, and say so if you rely on a child or infant source.
-- You explain published information. You don't diagnose anyone or tell them what treatment to choose. When it fits, suggest talking with a doctor.
-- If the question describes serious warning signs (for example vomiting blood, black or bloody stool, severe belly pain, signs of dehydration), tell the person to seek medical care right away.
+- If the sources cover only part of the question, answer that part and say plainly which part
+  they don't cover.
+- If the person asks which condition they have, don't choose one for them. Explain what the sources
+  say about each condition they mention, and suggest they talk with a doctor.
+- You explain published information. You don't diagnose anyone or tell them what treatment to choose.
+  When it fits, suggest talking with a doctor.
+- Some sources are written for children or infants (their title says so). If the question is not about
+  a child or infant, prefer the other sources. If only a child or infant source is relevant, you may
+  use it, but say that it was written for children or infants.
+- Do not say "sources that YOU provided" or "sources that YOU gave me". Just say "my sources" or "the sources below".
+- Only if none of the sources are relevant to the question, reply exactly:
+  "My sources don't cover this."
 - Use plain, simple language.
 
 Sources:
@@ -102,7 +114,7 @@ def print_sources(text, chunks):
 
 if __name__ == "__main__":
     retriever = build_hybrid_retriever()
-    llm = ChatGroq(model=GROQ_MODEL, temperature=0)  # temperature 0 = stick closely to the sources
+    llm = ChatGroq(model=os.getenv("GROQ_MODEL", "your-model-here"), temperature=0)  # temperature 0 = stick closely to the sources
 
     print("\nAsk a question about digestive health (press Enter on an empty line to quit).")
     while True:

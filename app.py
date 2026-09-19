@@ -1,10 +1,5 @@
-"""
-Run locally:   uvicorn app:app
-               then open http://127.0.0.1:8000
-Deployed:      Hugging Face Spaces builds the Dockerfile and serves on port 7860.
-"""
-
 # FastAPI server for the digestive health question-answering app.
+import os
 import time
 from collections import defaultdict
 
@@ -13,18 +8,16 @@ from fastapi.responses import FileResponse
 from langchain_groq import ChatGroq
 from pydantic import BaseModel, Field
 
-from generate import GROQ_MODEL, answer, cited_sources
+from generate import answer, cited_sources
 from retrieve import build_hybrid_retriever
 
-# The link is public and every question spends Groq credits, so each visitor
-# gets a limited number of questions per hour.
 QUESTIONS_PER_HOUR = 20
-ask_history = defaultdict(list)  # visitor -> the times they asked
+ask_history = defaultdict(list) 
 
 # Build the retriever and LLM once when the server starts.
 print("Loading the retriever...")
 retriever = build_hybrid_retriever()
-llm = ChatGroq(model=GROQ_MODEL, temperature=0)  # temperature 0 = stick closely to the sources
+llm = ChatGroq(model=os.getenv("GROQ_MODEL", "your-model-here"), temperature=0)  # temperature 0 = stick closely to the sources
 
 app = FastAPI()
 
@@ -58,6 +51,11 @@ def check_rate_limit(visitor):
 @app.get("/")
 def home():
     return FileResponse("index.html")
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
 @app.post("/ask")

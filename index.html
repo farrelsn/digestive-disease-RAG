@@ -40,9 +40,12 @@
     border: 1px solid #dde3ea;
     padding: 14px 16px;
     border-radius: 12px;
-    white-space: pre-wrap;
   }
   .answer.pending { color: #5a6675; font-style: italic; }
+  .answer p { margin: 0 0 10px; }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer ul { margin: 0 0 10px; padding-left: 22px; }
+  .answer li { margin-bottom: 6px; }
 
   /* The [1] markers the model writes, turned into links to the source. */
   .citation {
@@ -131,15 +134,50 @@ function escapeHtml(text) {
 }
 
 // Turn each [1] in the answer into a link to the page that source number came from.
-function linkCitations(text, sources) {
+function linkCitations(html, sources) {
   const urlByNumber = {};
   for (const source of sources) {
     for (const number of source.numbers) urlByNumber[number] = source.url;
   }
-  return escapeHtml(text).replace(/\[(\d+)\]/g, (whole, number) => {
+  return html.replace(/\[(\d+)\]/g, (whole, number) => {
     const url = urlByNumber[number];
     return url ? `<a class="citation" href="${url}" target="_blank">[${number}]</a>` : whole;
   });
+}
+
+// The model writes light markdown: **bold** for emphasis and "- " for lists.
+// Without this they show up on the page as literal asterisks and dashes.
+function formatMarkdown(html) {
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+  // Walk the lines, collecting runs of bullets into one list.
+  const blocks = [];
+  let bullets = [];
+
+  function closeList() {
+    if (bullets.length) {
+      blocks.push(`<ul>${bullets.map(item => `<li>${item}</li>`).join("")}</ul>`);
+      bullets = [];
+    }
+  }
+
+  for (const line of html.split("\n")) {
+    const bullet = line.match(/^\s*[-*]\s+(.*)$/);
+    if (bullet) {
+      bullets.push(bullet[1]);
+    } else {
+      closeList();
+      if (line.trim()) blocks.push(`<p>${line}</p>`);
+    }
+  }
+  closeList();
+
+  return blocks.join("");
+}
+
+// Escape first, then add our own markup — never the other way round.
+function renderAnswer(text, sources) {
+  return formatMarkdown(linkCitations(escapeHtml(text), sources));
 }
 
 function sourceList(sources) {
@@ -186,7 +224,7 @@ form.addEventListener("submit", async event => {
 
     const result = await response.json();
     placeholder.innerHTML =
-      `<div class="answer">${linkCitations(result.answer, result.sources)}${sourceList(result.sources)}</div>`;
+      `<div class="answer">${renderAnswer(result.answer, result.sources)}${sourceList(result.sources)}</div>`;
   } catch (error) {
     placeholder.innerHTML = `<div class="answer">Something went wrong: ${escapeHtml(error.message)}</div>`;
   }
