@@ -6,8 +6,8 @@ import re
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-INPUT_FILE = "health_documents.json"
-OUTPUT_FILE = "chunks.jsonl"
+INPUT_FILE = "data/health_documents.json"
+OUTPUT_FILE = "data/chunks.jsonl"
 
 CHUNK_SIZE = 800    # limit the chunk size to 800 characters, so the LLM can read multiple chunks in one prompt
 CHUNK_OVERLAP = 120  # keep some overlap between chunks to not lose context

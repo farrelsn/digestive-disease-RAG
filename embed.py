@@ -11,5 +11,5 @@ vector_store = Chroma.from_documents(
     embedding=embeddings,
     ids=[chunk.metadata["chunk_id"] for chunk in chunks],
     collection_name="digestive_health",
-    persist_directory="chroma_db",
+    persist_directory="data/chroma_db",
 )

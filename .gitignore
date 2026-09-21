@@ -2,9 +2,9 @@
 .env
 groq
 
-# Built artefacts. chroma_db/ is rebuilt by the Dockerfile from chunks.jsonl,
+# Built artefacts. data/chroma_db/ is rebuilt by the Dockerfile from data/chunks.jsonl,
 # and health_rag_data/ is the notebook's download cache.
-chroma_db/
+data/chroma_db/
 health_rag_data/
 
 __pycache__/

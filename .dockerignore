@@ -5,7 +5,7 @@ groq
 __pycache__/
 *.pyc
 
-chroma_db/
+data/chroma_db/
 
-*.ipynb
+notebook/
 health_rag_data/

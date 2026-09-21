@@ -30,11 +30,11 @@ def build_hybrid_retriever():
     # Open vector database created in embed.py
     vector_store = Chroma(
         collection_name="digestive_health",
-        persist_directory="chroma_db",
+        persist_directory="data/chroma_db",
         embedding_function=embeddings,
     )
     if not vector_store.get(limit=1)["ids"]:
-        raise RuntimeError("chroma_db is still empty. Run embed.py first.")
+        raise RuntimeError("data/chroma_db is still empty. Run embed.py first.")
     semantic_search = vector_store.as_retriever(search_kwargs={"k": CANDIDATES})
 
     # Keyword search: BM25 builds its word index in memory from the same chunks.

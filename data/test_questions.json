@@ -1,0 +1,102 @@
+[
+  {
+    "question": "How is occasional acid reflux different from GERD?",
+    "expected_documents": ["acid-reflux-ger-gerd-adults_facts"]
+  },
+  {
+    "question": "My baby spits up after almost every feeding. Is that normal?",
+    "expected_documents": ["acid-reflux-ger-gerd-infants_facts", "acid-reflux-ger-gerd-infants_symptoms"]
+  },
+  {
+    "question": "Is being lactose intolerant the same as being allergic to milk?",
+    "expected_documents": ["lactose-intolerance_symptoms"]
+  },
+  {
+    "question": "Which foods and drinks have lactose in them?",
+    "expected_documents": ["lactose-intolerance_nutrition"]
+  },
+  {
+    "question": "Which foods have gluten in them?",
+    "expected_documents": ["celiac-disease_nutrition"]
+  },
+  {
+    "question": "What blood tests can show if someone has celiac disease?",
+    "expected_documents": ["celiac-disease_diagnosis"]
+  },
+  {
+    "question": "Can celiac disease cause an itchy skin rash?",
+    "expected_documents": ["celiac-disease_symptoms"]
+  },
+  {
+    "question": "Can appendicitis be treated with antibiotics instead of surgery?",
+    "expected_documents": ["appendicitis_treatment"]
+  },
+  {
+    "question": "What are the signs that my appendix might be inflamed?",
+    "expected_documents": ["appendicitis_symptoms"]
+  },
+  {
+    "question": "What happens after surgery to remove the appendix?",
+    "expected_documents": ["appendicitis_treatment"]
+  },
+  {
+    "question": "How can I treat diarrhea at home?",
+    "expected_documents": ["diarrhea_treatment", "diarrhea_nutrition"]
+  },
+  {
+    "question": "My child has had diarrhea for weeks. What should they eat?",
+    "expected_documents": ["chronic-diarrhea-children_nutrition"]
+  },
+  {
+    "question": "What are the warning signs of dehydration?",
+    "expected_documents": ["diarrhea_symptoms", "food-poisoning_symptoms", "viral-gastroenteritis_symptoms"]
+  },
+  {
+    "question": "Is the stomach flu caused by the influenza virus?",
+    "expected_documents": ["viral-gastroenteritis_symptoms"]
+  },
+  {
+    "question": "How do people catch viral gastroenteritis?",
+    "expected_documents": ["viral-gastroenteritis_symptoms"]
+  },
+  {
+    "question": "Can chemicals in food make you sick?",
+    "expected_documents": ["food-poisoning_symptoms"]
+  },
+  {
+    "question": "Why do I have so much gas and bloating?",
+    "expected_documents": ["gas-digestive-tract_symptoms", "gas-digestive-tract_facts", "gas-digestive-tract_nutrition"]
+  },
+  {
+    "question": "What's the difference between diverticulosis and diverticulitis?",
+    "expected_documents": ["diverticulosis-diverticulitis_facts"]
+  },
+  {
+    "question": "Which tests do doctors use to check for diverticular disease?",
+    "expected_documents": ["diverticulosis-diverticulitis_diagnosis"]
+  },
+  {
+    "question": "What causes stomach ulcers?",
+    "expected_documents": ["peptic-ulcers-stomach-ulcers_symptoms"]
+  },
+  {
+    "question": "How do doctors heal a peptic ulcer?",
+    "expected_documents": ["peptic-ulcers-stomach-ulcers_treatment"]
+  },
+  {
+    "question": "Why would the stomach empty food too slowly?",
+    "expected_documents": ["gastroparesis_symptoms"]
+  },
+  {
+    "question": "What should I stop eating or drinking if I have functional dyspepsia?",
+    "expected_documents": ["indigestion-dyspepsia_nutrition"]
+  },
+  {
+    "question": "What problems can hemorrhoids lead to?",
+    "expected_documents": ["hemorrhoids_facts"]
+  },
+  {
+    "question": "How do doctors find where bleeding in the digestive tract is coming from?",
+    "expected_documents": ["gastrointestinal-bleeding_diagnosis"]
+  }
+]

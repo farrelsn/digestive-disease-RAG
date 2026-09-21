@@ -1,13 +1,31 @@
 # Digestive Health Explainer
 
-A RAG (Retrieval-Augmented Generation) chatbot that answers digestive health questions using
-published NIDDK articles. It searches ~1,000 passages of NIDDK text, hands the best ones to an
-LLM, and returns an answer where every statement carries a `[1]` linking to the page it came
-from. It never answers from the model's own knowledge — if the sources don't cover something,
-it says so.
+A Retrieval-Augmented Generation (RAG) chatbot that answers digestive health questions using articles scraped from the official National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK) website:
 
-This explains published health information. It does not diagnose anyone or recommend
-treatment.
+https://www.niddk.nih.gov/
+
+The application combines semantic and keyword search to retrieve relevant passages, then uses a language model to generate answers grounded in those passages.
+
+## Tech stack
+
+**Data collection**
+* `requests` + `BeautifulSoup` — scrape the NIDDK articles ([health_sources_collections.ipynb](notebook/health_sources_collections.ipynb))
+
+**RAG pipeline** (LangChain)
+* `RecursiveCharacterTextSplitter` — split articles into chunks ([chunking.py](chunking.py))
+* `BAAI/bge-small-en-v1.5` via HuggingFace embeddings — turn chunks into vectors ([embed.py](embed.py))
+* Chroma — vector database, stored in `data/chroma_db/` ([embed.py](embed.py))
+* BM25 (`rank_bm25`) + NLTK stemming — keyword search ([retrieve.py](retrieve.py))
+* `EnsembleRetriever` — hybrid search, 70% semantic / 30% keyword ([retrieve.py](retrieve.py))
+* Groq (`openai/gpt-oss-120b`) — generates the answer from the retrieved chunks ([generate.py](generate.py))
+
+**Web app**
+* FastAPI + Uvicorn — Backend ([app.py](app.py))
+* HTML, CSS and JavaScript — Frontend ([index.html](index.html))
+
+**Deployment**
+* Docker + Railway — the image bakes in the embedding model and builds the vector database at build time ([Dockerfile](Dockerfile), [railway.json](railway.json))
+
 
 ## Running locally
 
@@ -23,17 +41,14 @@ cp .env.example .env
 # Edit .env → set GROQ_API_KEY
 
 # 3. Build the search index
-python chunking.py     # articles → chunks.jsonl
-python embed.py        # chunks   → chroma_db/
+python chunking.py     # articles → data/chunks.jsonl
+python embed.py        # chunks   → data/chroma_db/
 
 # 4. Start the app
-python run.py
+uvicorn app:app --reload
 ```
 
-Step 4 opens [127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
-
-The first run of `embed.py` downloads the embedding model (about 130 MB). After that,
-everything except the Groq call runs offline on your own machine, with no GPU needed.
+Open http://127.0.0.1:8000 in browser.
 
 ### In the terminal instead
 
