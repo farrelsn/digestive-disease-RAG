@@ -6,6 +6,8 @@ https://www.niddk.nih.gov/
 
 The application combines semantic and keyword search to retrieve relevant passages, then uses a language model to generate answers grounded in those passages.
 
+Live app: https://digestive-disease-rag-production.up.railway.app/
+
 ## Tech stack
 
 **Data collection**
